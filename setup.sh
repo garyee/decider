@@ -11,3 +11,16 @@
 # !pip install xgboost --upgrade
 # !pip install git+https://github.com/MaximeJumelle/ALEPython.git@dev#egg=alepython
 # !pip install sklearn-gbmi
+
+pip install sklearn
+pip install imblearn
+pip install pandas
+pip install numpy
+pip install matplotlib
+pip install seaborn
+pip install interpret -q
+pip install interpret-community
+pip install xgboost
+pip install lime
+pip install autosklearn
+pip install shap

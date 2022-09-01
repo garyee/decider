@@ -1,6 +1,5 @@
-#@title Column transformer helper
-
 from sklearn.pipeline import Pipeline
+import numpy as np
 
 import warnings
 

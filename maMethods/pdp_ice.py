@@ -1,6 +1,5 @@
 from sklearn.inspection import PartialDependenceDisplay
 
-
 def applyICE(model,df_train,number_of_feature_to_display=0):
   pdp = PartialDependenceDisplay.from_estimator(model,       
                                   df_train,
