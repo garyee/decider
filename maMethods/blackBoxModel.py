@@ -1,6 +1,7 @@
 from xgboost import XGBRegressor, XGBClassifier
 from autosklearn.experimental.askl2 import AutoSklearn2Classifier
 from autosklearn.regression import AutoSklearnRegressor
+from sklearn.metrics import accuracy_score, r2_score
 
 def trainBlackBoxModel(reg_or_class,df_train, df_y_train,df_test,df_y_test,model=None):
     if(reg_or_class==2):

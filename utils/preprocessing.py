@@ -3,6 +3,34 @@ from sklearn.preprocessing import LabelEncoder
 from imblearn.combine import SMOTETomek
 from imblearn.over_sampling import SMOTE
 from imblearn.under_sampling import RandomUnderSampler,EditedNearestNeighbours,TomekLinks
+import pandas as pd
+import numpy as np
+
+from utils.enums import TaskType
+from utils.helper import getCategoricalColsNameList
+from utils.columtransformer import get_feature_names
+
+def preprocess(X_train, X_test, y_train, y_test,taskType):
+  # display_missing_values_table_chart(X_train)
+  delete_missing_values_columns(X_train,X_test)
+  
+  # display_high_cardinalitity(X_train)
+  delete_high_cardinalitity(X_train,X_test)
+  
+  with warnings.catch_warnings():
+    warnings.simplefilter('ignore')
+    X_train,X_test=impute(X_train,X_test)
+  #X_train.head()
+
+  X_train,X_test=encodeCategoricalCols(X_train,X_test)
+  # #X_train.head()
+
+  if taskType==TaskType.CLASSIFICATION:
+    showBalance(y_train)
+    if getRatio(y_train)>=2:
+      X_train,y_train = resample(X_train,y_train,strategy=1)
+
+  return [X_train, X_test, y_train, y_test]
 
 # Delete cols with to much missing
 def display_missing_values_table_chart(df,axis=1):
@@ -129,7 +157,7 @@ def resample(X,y,strategy='auto',algo=None,random_state=1):
     printClassCount(y_resampled,'resampled by '+ (algo or 'RUS')+'\n')
     return X_resampled,y_resampled
 
-if reg_or_class==2:
-  showBalance(y_train)
-  if getRatio(y_train)>=2:
-    X_train,y_train = resample(X_train,y_train,strategy=1)
+# if reg_or_class==2:
+#   showBalance(y_train)
+#   if getRatio(y_train)>=2:
+#     X_train,y_train = resample(X_train,y_train,strategy=1)

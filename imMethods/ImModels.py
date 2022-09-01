@@ -1,5 +1,7 @@
+from imMethods.ImModelABC import XAIMethod
 from interpret.glassbox import ExplainableBoostingRegressor, LogisticRegression, LinearRegression, RegressionTree
 from interpret.glassbox import ExplainableBoostingClassifier, ClassificationTree, DecisionListClassifier
+
 
 class MethodClassTree(XAIMethod):
   CONSTANT = ClassificationTree()
