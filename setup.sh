@@ -22,5 +22,8 @@ pip install interpret -q
 pip install interpret-community
 pip install xgboost
 pip install lime
-pip install autosklearn
 pip install shap
+
+#!sudo apt-get install build-essential swig 
+#!curl https://raw.githubusercontent.com/automl/auto-sklearn/master/requirements.txt | xargs -n 1 -L 1 pip install 
+#!pip install auto-sklearn

@@ -1,3 +1,8 @@
+
+import seaborn as sns
+import numpy as np
+import matplotlib.pyplot as plt
+
 #@title Calculaten and plot correlation
 def printCorrMatrix(df):
   corr = df.corr()
@@ -20,4 +25,6 @@ def printCorrMatrix(df):
                      ax=ax)
   plt.title('Correlation Matrix for the your Dataset')
   #print(np.absolute(corr.values[np.triu_indices_from(corr.values,1)]).mean())
+
+  
 

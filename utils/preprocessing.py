@@ -7,7 +7,7 @@ import pandas as pd
 import numpy as np
 
 from utils.enums import TaskType
-from utils.helper import getCategoricalColsNameList
+from utils.helper import getCategoricalAndNummericalColsNameList
 from utils.columtransformer import get_feature_names
 
 def preprocess(X_train, X_test, y_train, y_test,taskType):
@@ -77,7 +77,7 @@ from sklearn.compose import ColumnTransformer
 import warnings
 
 def impute(df_train,df_test=None,):
-  cat_cols,num_cols=getCategoricalColsNameList(df_train)
+  cat_cols,num_cols=getCategoricalAndNummericalColsNameList(df_train)
   column_trans = ColumnTransformer(
   [("num",SimpleImputer(strategy='mean'),num_cols),
   ("cat", SimpleImputer(strategy='constant'), cat_cols)],
@@ -102,7 +102,7 @@ def impute(df_train,df_test=None,):
   return df_train_imputed,df_test_imputed
 
 def encodeCategoricalCols(df_train,df_test=None):
-  cat_cols,num_cols=getCategoricalColsNameList(df_train)
+  cat_cols,num_cols=getCategoricalAndNummericalColsNameList(df_train)
   res_test=df_test
   res_train=df_train
   if (cat_cols is not None and isinstance(cat_cols,list) and len(cat_cols)>0):

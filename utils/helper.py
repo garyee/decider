@@ -1,14 +1,10 @@
 #@title Helper Functions (read/write files etc)
-import os.path
 import io
 import pandas as pd
 import numpy as np
 from sklearn.model_selection import train_test_split
-import math
 import matplotlib.pyplot as plt
 import seaborn as sns
-from sklearn.base import TransformerMixin, BaseEstimator
-import json
 
 tmpConfig=None
 seed=42
@@ -81,7 +77,12 @@ def getTrainAndTestSetXandY(X_train,X_test,y_label):
     return X_train,X_test,y_train,y_test
   return train_test_split(X_train, y_train, test_size=0.3, random_state=42)
 
-def getCategoricalColsNameList(df):
+def getCategoricalAndNummericalColsNameList(df):
   cols = list(df.columns.values)
   num_cols = list(df._get_numeric_data().columns.values)
   return list(set(cols) - set(num_cols)),num_cols
+
+def getCatlAndNumColsCount(df):
+  total = len(list(df.columns.values))
+  cat_cols,num_cols = getCategoricalAndNummericalColsNameList(df)
+  return total,len(cat_cols),len(num_cols)

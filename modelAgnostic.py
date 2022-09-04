@@ -4,8 +4,10 @@ from maMethods.globalSurrogate import applyGlobalSurrogate
 from maMethods.lime import applyLime
 
 
-def applyPostHoc(X_train,X_test,y_train,y_test,taskType,scope):
-  model=trainBlackBoxModel(X_train, y_train,X_test,y_test,taskType)
+def applyPostHoc(X_train,X_test,y_train,y_test,taskType,scope,userModel=None):
+  model=userModel
+  if(model is None):
+    model=trainBlackBoxModel(X_train, y_train,X_test,y_test,taskType)
   if(scope==ExplanationScope.LOCAL):
     localMethod(model,X_train,X_test,y_train,taskType)
   else:
