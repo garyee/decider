@@ -1,7 +1,15 @@
 from abc import ABC, abstractmethod
 from interpret import show
 
+from utils.enums import ExplanationScope
+
 class XAIMethod(ABC):
+
+  @classmethod
+  @property
+  @abstractmethod
+  def CONSTRAINTS(cls):
+      raise NotImplementedError
 
   @classmethod
   @property
@@ -23,8 +31,8 @@ class XAIMethod(ABC):
     self.CONSTANT.fit(df_train, df_y_train)
 
   @classmethod
-  def showExplanation(self,glob_or_local):
-    if(glob_or_local==1):
+  def showExplanation(self,scope,X_test,y_test):
+    if(scope==ExplanationScope.GLOBAL):
       globalExp = self.CONSTANT.explain_global(name=self.getMethodStrName())
       show(globalExp)
     else:

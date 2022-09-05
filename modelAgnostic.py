@@ -8,10 +8,10 @@ def applyPostHoc(X_train,X_test,y_train,y_test,taskType,scope,userModel=None):
   model=userModel
   if(model is None):
     model=trainBlackBoxModel(X_train, y_train,X_test,y_test,taskType)
-  if(scope==ExplanationScope.LOCAL):
-    localMethod(model,X_train,X_test,y_train,taskType)
-  else:
+  if(scope==ExplanationScope.GLOBAL):
     globalMethod(model,X_train,X_test,y_train,y_test)
+  else:
+    localMethod(model,X_train,X_test,y_train,taskType)
 
 def globalMethod(model,df_train,df_test,df_train_y,df_test_y):
     applyGlobalSurrogate(model, df_train,df_test)

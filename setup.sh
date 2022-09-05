@@ -23,6 +23,10 @@ pip install interpret-community
 pip install xgboost
 pip install lime
 pip install shap
+pip install lightgbm
+pip install git+https://github.com/MaximeJumelle/ALEPython.git@dev#egg=alepython
+pip install statsmodels
+pip install sklearn-gbmi
 
 #!sudo apt-get install build-essential swig 
 #!curl https://raw.githubusercontent.com/automl/auto-sklearn/master/requirements.txt | xargs -n 1 -L 1 pip install 
