@@ -9,6 +9,9 @@ class XAIMethod(ABC):
   def CONSTRAINTS(cls):
       raise NotImplementedError
 
+  def getConstraints(self):
+    return self.CONSTRAINTS
+
   @classmethod
   @property
   @abstractmethod
@@ -53,14 +56,3 @@ class XAIMethod(ABC):
 
   def getResults(self):
     return self.RESULTS
-
-  @classmethod
-  @property
-  @abstractmethod
-  def COMPLEXITY(cls):
-      raise NotImplementedError
-
-  def getComplexity(self):
-    return self.COMPLEXITY
-
-

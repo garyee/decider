@@ -23,7 +23,7 @@ def rankPool(pool,properties):
     for method in pool:
         methodCounter=0
         for prop, value in properties.items():
-            rank=method.rank(prop,value)
+            rank=rank(prop,value,method)
             if(rank is not None):
                 methodCounter+=rank
         if(str(methodCounter) not in res):
@@ -34,3 +34,23 @@ def rankPool(pool,properties):
             else:
                 res[str(methodCounter)].append(method)
     return res
+
+def rank(prop,value,method):
+    constraints=method.getConstraints()
+    if(prop not in constraints):
+        return 1
+    if(prop=='heterogeneity'):
+        return constraints['heterogeneity'].rank(value)
+    if(prop=='col_count'):
+        return constraints['col_count'].rank(value)
+    if(prop=='corr_det'):
+        return constraints['corr_det'].rank(value)
+    if(prop=='multicollinearity'):
+        return constraints['multicollinearity'].rank(value)
+    if(prop=='linearity'):
+        return constraints['linearity'].rank(value)
+    if(prop=='monotonicity'):
+        return constraints['monotonicity'].rank(value)
+    if(prop=='interactivity'):
+        return constraints['interactivity'].rank(value)
+        

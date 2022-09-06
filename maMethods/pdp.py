@@ -1,7 +1,7 @@
 from sklearn.inspection import PartialDependenceDisplay
 
 from methodBaseClass.PostHocBase import PostHocBase
-from utils.enums import ExplanationScope, ResultTypes, TaskType
+from utils.enums import ColumCount, Complexity, Correlation, ExplanationScope, Heterogeneity, Interactivity, Linearity, Monotonicity, Multicollinearity, ResultTypes, TaskType
 
 class PDP(PostHocBase):
   NAME='PDP'
@@ -9,13 +9,14 @@ class PDP(PostHocBase):
   SCOPE=ExplanationScope.GLOBAL
   RESULTS=[ResultTypes.VIS]
   CONSTRAINTS={
-    'heterogeneity':None,
-    'col_count':None,
-    'corr_det':None,
-    'multicollinearity':None,
-    'linearity':None,
-    'monotonicity':None,
-    'interactivity':None,
+    'complexity': Complexity.LOW,
+    'heterogeneity':Heterogeneity.BOTH,
+    'col_count':ColumCount.NONE,
+    'corr_det':Correlation.VERYBAD,
+    'multicollinearity':Multicollinearity.BAD,
+    'linearity':Linearity.NO,
+    'monotonicity':Monotonicity.YES,
+    'interactivity':Interactivity.YES,
   }
 
   def apply(model,df_train,number_of_feature_to_display=0):

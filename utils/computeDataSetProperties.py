@@ -45,7 +45,7 @@ def computeLinearity(X_train,y_train,targetName):
     corrMat=fullXy.corr()
     targetCol=corrMat.loc[:, [targetName]]
     targetCol.drop(targetName,inplace=True)
-    return targetCol.mean()[targetName]
+    return abs(targetCol.mean()[targetName])
 
 def computeMonotonicity(X_train,y_train,targetName):
     fullXy=pd.concat([X_train,y_train],axis=1)

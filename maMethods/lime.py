@@ -4,7 +4,7 @@ from interpret_community.tabular_explainer import TabularExplainer
 import numpy as np
 from methodBaseClass.PostHocBase import PostHocBase
 
-from utils.enums import ExplanationScope, ResultTypes, TaskType
+from utils.enums import ColumCount, Complexity, Correlation, ExplanationScope, Heterogeneity, Interactivity, Linearity, Monotonicity, Multicollinearity, ResultTypes, TaskType
 
 class LIME(PostHocBase):
   NAME='LIME'
@@ -12,13 +12,14 @@ class LIME(PostHocBase):
   SCOPE=ExplanationScope.LOCAL
   RESULTS=[ResultTypes.VIS]
   CONSTRAINTS={
-    'heterogeneity':None,
-    'col_count':None,
-    'corr_det':None,
-    'multicollinearity':None,
-    'linearity':None,
-    'monotonicity':None,
-    'interactivity':None,
+    'complexity': Complexity.LOW,
+    'heterogeneity':Heterogeneity.CATEGORICAL,
+    'col_count':ColumCount.NONE,
+    'corr_det':Correlation.BAD,
+    'multicollinearity':Multicollinearity.BAD,
+    'linearity':Linearity.BOTH,
+    'monotonicity':Monotonicity.BOTH,
+    'interactivity':Interactivity.YES,
   }
 
   def apply(model,df_train,df_test,df_train_y,taskType,index=42):

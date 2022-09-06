@@ -2,7 +2,7 @@ from sklearn.inspection import permutation_importance
 import matplotlib.pyplot as plt
 from methodBaseClass.PostHocBase import PostHocBase
 
-from utils.enums import ExplanationScope, ResultTypes, TaskType
+from utils.enums import ColumCount, Complexity, Correlation, ExplanationScope, Heterogeneity, Interactivity, Linearity, Monotonicity, Multicollinearity, ResultTypes, TaskType
 
 class PFI(PostHocBase):
   NAME='PFI'
@@ -10,14 +10,16 @@ class PFI(PostHocBase):
   SCOPE=ExplanationScope.GLOBAL
   RESULTS=[ResultTypes.FI]
   CONSTRAINTS={
-    'heterogeneity':None,
-    'col_count':None,
-    'corr_det':None,
-    'multicollinearity':None,
-    'linearity':None,
-    'monotonicity':None,
-    'interactivity':None,
+    'complexity': Complexity.LOW,
+    'heterogeneity':Heterogeneity.BOTH,
+    'col_count':ColumCount.NONE,
+    'corr_det':Correlation.BAD,
+    'multicollinearity':Multicollinearity.NONE,
+    'linearity':Linearity.YES,
+    'monotonicity':Monotonicity.NO,
+    'interactivity':Interactivity.NO,
   }
+
   def apply(model,df_train,df_train_y):
       result = permutation_importance(model,
                                       df_train,

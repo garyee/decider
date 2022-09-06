@@ -1,23 +1,25 @@
 import shap
 
 from methodBaseClass.PostHocBase import PostHocBase
-from utils.enums import ExplanationScope, ResultTypes, TaskType
+from utils.enums import ColumCount, Complexity, Correlation, ExplanationScope, Heterogeneity, Interactivity, Linearity, Monotonicity, Multicollinearity, ResultTypes, TaskType
   
 
 class SHAP(PostHocBase):
-  NAME='PDP'
+  NAME='SHAP'
   TASKTYPE=TaskType.BOTH
   SCOPE=ExplanationScope.BOTH
   RESULTS=[ResultTypes.VIS,ResultTypes.VIS]
   CONSTRAINTS={
-    'heterogeneity':None,
-    'col_count':None,
-    'corr_det':None,
-    'multicollinearity':None,
-    'linearity':None,
-    'monotonicity':None,
-    'interactivity':None,
+    'complexity': Complexity.MEDIUM,
+    'heterogeneity':Heterogeneity.BOTH,
+    'col_count':ColumCount.BAD,
+    'corr_det':Correlation.BAD,
+    'multicollinearity':Multicollinearity.NONE,
+    'linearity':Linearity.NO,
+    'monotonicity':Monotonicity.YES,
+    'interactivity':Interactivity.YES,
   }
+
 
 def applySHAP(model,df_train):
   explainer = shap.Explainer(model)

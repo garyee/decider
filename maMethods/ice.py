@@ -1,7 +1,7 @@
 from sklearn.inspection import PartialDependenceDisplay
 
 from methodBaseClass.PostHocBase import PostHocBase
-from utils.enums import ExplanationScope, ResultTypes, TaskType
+from utils.enums import ColumCount, Complexity, Correlation, ExplanationScope, Heterogeneity, Interactivity, Linearity, Monotonicity, Multicollinearity, ResultTypes, TaskType
 
 class ICE(PostHocBase):
   NAME='ICE'
@@ -9,13 +9,14 @@ class ICE(PostHocBase):
   SCOPE=ExplanationScope.LOCAL
   RESULTS=[ResultTypes.VIS]
   CONSTRAINTS={
-    'heterogeneity':None,
-    'col_count':None,
-    'corr_det':None,
-    'multicollinearity':None,
-    'linearity':None,
-    'monotonicity':None,
-    'interactivity':None,
+    'complexity': Complexity.HIGH,
+    'heterogeneity':Heterogeneity.BOTH,
+    'col_count':ColumCount.NONE,
+    'corr_det':Correlation.VERYBAD,
+    'multicollinearity':Multicollinearity.NONE,
+    'linearity':Linearity.YES,
+    'monotonicity':Monotonicity.YES,
+    'interactivity':Interactivity.NO,
   }
 
   def apply(model,df_train,number_of_feature_to_display=0):

@@ -101,22 +101,160 @@ class ResultTypes(Enum):
     return str(self.value)
 
 class Accuracy(Enum):
-  LOW = 1
-  MEDIUM = 2
+  LOW = -1
+  MEDIUM = 0
   HIGH = 3
+
+  def rank(self,numValue):
+      return self.value
+      
+  def __str__(self):
+    return str(self.value)
 
 
 class Complexity(Enum):
-  LOW = 1
-  MEDIUM = 2
-  HIGH = 3
+  HIGH = -3
+  MEDIUM = 0
+  LOW = 3
+
+  def rank(self,numValue):
+    return self.value
+    
+  def __str__(self):
+    return str(self.value)
 
 class Interactivity(Enum):
-  MANUALLY = 1
-  YES = 2
-  NO = 3
+  NO = 1
+  MANUALLY = 2
+  YES = 3
 
-class Interactivity(Enum):
-  MANUALLY = 1
+  def rank(self,numValue):
+    if(self.value==Interactivity.YES.value):
+        return 3
+    if(self.value==Interactivity.NO.value):
+      if(numValue>1):
+        return -10
+      if(numValue>0.5):
+        return -3
+    if(self.value==Interactivity.MANUALLY.value):
+      if(numValue>1):
+        return -2
+      if(numValue>0.5):
+        return 1
+    return 1
+
+  def __str__(self):
+    return str(self.value)
+
+class Heterogeneity(Enum):
+  CATEGORICAL = 1
+  NUMMERICAL = 2
+  BOTH = 3
+
+  def rank(self,numValue):
+    if(self.value==Heterogeneity.BOTH.value):
+      return 2
+    if(self.value==Heterogeneity.NUMMERICAL.value):
+      if(numValue>0.5):
+        return -1
+    if(self.value==Heterogeneity.CATEGORICAL.value):
+      if(numValue<0.5):
+        return -1
+    return 1
+
+  def __str__(self):
+    return str(self.value)
+
+class Monotonicity(Enum):
+  NO = 1
   YES = 2
-  NO = 3
+  BOTH = 3
+
+  def rank(self,numValue):
+    if(self.value==Monotonicity.BOTH.value):
+      return 2
+    if(self.value==Monotonicity.YES.value):
+      if(numValue<0.8):
+        return -1
+    if(self.value==Monotonicity.NO.value):
+      if(numValue>0.8):
+        return -1
+    return 1
+
+  def __str__(self):
+    return str(self.value)
+
+class Linearity(Enum):
+  NO = 1
+  YES = 2
+  BOTH = 3
+
+  def rank(self,numValue):
+    if(self.value==Linearity.BOTH.value):
+      return 2
+    if(self.value==Linearity.YES.value):
+      if(numValue<0.4):
+        return -2
+    if(self.value==Linearity.NO.value):
+      if(numValue>0.4):
+        return -3
+    return 1
+
+  def __str__(self):
+    return str(self.value)
+
+#The effect Correlation has 0=correlated
+class Correlation(Enum):
+  VERYBAD = -3
+  BAD = 0
+  NONE = 3
+
+  def rank(self,numValue):
+    if(self.value==Correlation.NONE.value):
+      return 3
+    if(self.value==Correlation.BAD.value):
+      if(numValue<0.5):
+        return -2
+    if(self.value==Correlation.VERYBAD.value):
+      if(numValue<0.5):
+        return -5
+    return 1
+
+  def __str__(self):
+    return str(self.value)
+
+#>10 is mc
+class Multicollinearity(Enum):
+  VERYBAD = 1
+  BAD = 2
+  NONE = 3
+
+  def rank(self,numValue):
+    if(self.value==Multicollinearity.NONE.value):
+      return 2
+    if(self.value==Multicollinearity.BAD.value):
+      if(numValue>10):
+        return -2
+    if(self.value==Multicollinearity.VERYBAD.value):
+      if(numValue>5):
+        return -3
+    return 1
+
+  def __str__(self):
+    return str(self.value)
+
+class ColumCount(Enum):
+  BAD = 1
+  NONE = 3
+
+  def rank(self,numValue):
+    if(self.value==Multicollinearity.NONE.value):
+      return 2
+    if(self.value==Multicollinearity.BAD.value):
+      colCountRatio=int((numValue/100)^2)
+      if(numValue>20):
+        return (-1*colCountRatio)
+    return 1
+
+  def __str__(self):
+    return str(self.value)

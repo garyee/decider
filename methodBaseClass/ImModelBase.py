@@ -13,20 +13,10 @@ class ImModelBase(XAIMethod):
     def CONSTANT(cls):
       raise NotImplementedError
 
-
-    @classmethod
-    @property
-    @abstractmethod
-    def ACCURACY(cls):
-        raise NotImplementedError
-
-    def getAccuracy(self):
-        return self.ACCURACY
-
-    @classmethod
-    def __init__(self, df_train, df_y_train):
-        self.train(df_train, df_y_train)
-        self.showExplanation(1)
+    # @classmethod
+    # def __init__(self, df_train, df_y_train):
+        # self.train(df_train, df_y_train)
+        # self.showExplanation(1)
         
     @classmethod
     def getMethodStrName(self):
