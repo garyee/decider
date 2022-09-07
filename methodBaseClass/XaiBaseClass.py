@@ -46,7 +46,7 @@ class XAIMethod(ABC):
       raise NotImplementedError
 
   def getName(self):
-    return self.Name
+    return self.NAME
 
   @classmethod
   @property

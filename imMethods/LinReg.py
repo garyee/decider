@@ -6,7 +6,7 @@ from interpret.glassbox import LinearRegression
 
 
 
-class LinRes(ImModelBase):
+class LinReg(ImModelBase):
   NAME='Linear regression'
   TASKTYPE=TaskType.REGRESSION
   SCOPE=ExplanationScope.GLOBAL

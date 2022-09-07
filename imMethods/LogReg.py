@@ -6,7 +6,7 @@ from interpret.glassbox import LogisticRegression
 
 
 
-class LogRes(ImModelBase):
+class LogReg(ImModelBase):
   NAME='Logistic regression'
   TASKTYPE=TaskType.CLASSIFICATION
   SCOPE=ExplanationScope.GLOBAL

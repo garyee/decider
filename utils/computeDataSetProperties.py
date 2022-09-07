@@ -1,4 +1,5 @@
 
+import math
 from utils.helper import getCatlAndNumColsCount
 import numpy as np
 from statsmodels.stats.outliers_influence import variance_inflation_factor
@@ -6,18 +7,21 @@ from patsy import dmatrices
 import pandas as pd
 import statsmodels.api as sm
 from statsmodels.formula.api import ols
+from sklearn.ensemble import GradientBoostingRegressor
 
-def getDataPropPre(propDict,config,X_train,y_train):
+from utils.interactivity2 import h_stat
+
+def getDataPropPre(propDict,config,X_train, X_test, y_train, y_test):
     total,het=computeHeterogeneity(X_train)
     propDict['heterogeneity']=het
     propDict['col_count']=total
     propDict['corr_det']=computeCorrDet(X_train)
-    propDict['linearity']=computeLinearity(X_train,y_train,config['targetLabel'])
+    propDict['linearity']=computeLinearity(X_train, y_train,config['targetLabel'])
     propDict['monotonicity']=computeMonotonicity(X_train,y_train,config['targetLabel'])
 
-def getDataPropPost(propDict,config,X_train,y_train):
+def getDataPropPost(propDict,config,X_train, X_test, y_train, y_test):
+    propDict['interactivity']=computeInteractivity(X_train, X_test, y_train, y_test,config['targetLabel'])
     propDict['multicollinearity']=computeMulticollinearity(X_train,y_train,config['targetLabel'])
-    propDict['interactivity']=computeInteractivity(X_train,y_train,config['targetLabel'])
 
 
 #1 - all categorical
@@ -54,12 +58,26 @@ def computeMonotonicity(X_train,y_train,targetName):
     targetCol.drop(targetName,inplace=True)
     return targetCol.mean()[targetName]
 
-def computeInteractivity(X_train,y_train,targetName):
-    fullXy=pd.concat([X_train,y_train],axis=1)
-    features = "+".join(fullXy.columns)
-    model = ols(targetName+' ~' + features, data=fullXy).fit()
-    tmp=sm.stats.anova_lm(model, typ=2)
+#ANOVA
+# def computeInteractivity(X_train, X_test, y_train, y_test,targetName):
+#     fullXy=pd.concat([X_train,y_train],axis=1)
+#     features = "+".join(fullXy.columns)
+#     model = ols(targetName+' ~' + features, data=fullXy).fit()
+#     tmp=sm.stats.anova_lm(model, typ=2)
+#     print(tmp)
 
-    interActionMatrix = pd.DataFrame(tmp)
-    # print(interActionMatrix)
+#     interActionMatrix = pd.DataFrame(tmp)
+#     # print(interActionMatrix)
+#     return 0
+
+def computeInteractivity(X_train, X_test, y_train, y_test,targetName):
+    gbr_1 = GradientBoostingRegressor(max_depth=10,random_state = 42)
+    gbr_1.fit(X_train, y_train)
+    print('GBM: '+str(gbr_1.score(X_test, y_test)))
+    hstat=h_stat(gbr_1, X_train, 'all')
+    print('H: '+hstat)
+#     # if(math.isnan(hstat)):
+#     #     return 0
+#     # return hstat
     return 0
+

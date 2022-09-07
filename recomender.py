@@ -1,13 +1,26 @@
-from imMethods.ImModels import MethodClassDecisionList, MethodClassTree
+from imMethods.EBM import EBM
+from imMethods.GAM import GAM
+from imMethods.GLM import GLM
+from imMethods.LinReg import LinReg
+from imMethods.LogReg import LogReg
+from imMethods.RuleFit import RuleFit
+from imMethods.SkopeRules import SkopeRules
+from imMethods.Tree import Tree
 from maMethods.ale import ALE
+from maMethods.globalSurrogate import GS
+from maMethods.ice import ICE
+from maMethods.lime import LIME
+from maMethods.pdp import PDP
+from maMethods.pfi import PFI
+from maMethods.shap import SHAP
 from methodBaseClass.XaiBaseClass import XAIMethod
 from utils.enums import Accuracy, Complexity, ExplanationScope, TaskType, XaiMode
-from utils.filter import filterResultType, filterScope, filterTaskType, filterXaiMethod
+from utils.filter import filterResultType, filterScope, filterTaskType, filterXaiMethod, rankPool
 
 
 def getRecommendation(config,properties):
 
-    pool=[MethodClassTree(),MethodClassDecisionList(),ALE()]
+    pool=[EBM(),GAM(),GLM(),LinReg(),LogReg(),RuleFit(),SkopeRules(),Tree(),ALE(),GS(),ICE(),LIME(),PDP(),PFI(),SHAP()]
     filterReasons=[]
 
     if('indexOfTheLocalSample' in config and config['indexOfTheLocalSample'] is not None):
@@ -32,6 +45,20 @@ def getRecommendation(config,properties):
         pool=filterResultType(pool,config['resultType'],filterReasons)
 
     rankedDist=rankPool(pool,properties)
+    res=[]
+    index=0
+    for key, value in rankedDist.items():
+        if(index>4):
+            break
+        if type(value) == list:
+            for  innerValue in value:
+                if(index>4):
+                    break
+                res.append(innerValue.getName()+' (Score: '+str(key)+')')
+                index+=1
+        else:
+            res.append(value.getName()+' (Score: '+str(key)+')')
+            index+=1
 
 
     # if "trainedModel" in initialConfig and initialConfig["trainedModel"] is not None:
@@ -42,5 +69,4 @@ def getRecommendation(config,properties):
 # elif "xaiMode" in initialConfig and  initialConfig["xaiMode"]==XaiMode.INTERPRETABLE_MODEL:
 #   applyInterpretableModel(X_train, y_train,initialConfig["taskType"])
 
-
-    return None;
+    return res;

@@ -42,9 +42,9 @@ dataSetProperties={
 }
 
 X_train, X_test, y_train, y_test = getTrainAndTestSetXandY(X_train,X_test,initialConfig["targetLabel"])
-getDataPropPre(dataSetProperties,initialConfig,X_train,y_train)
+getDataPropPre(dataSetProperties,initialConfig,X_train, X_test, y_train, y_test)
 X_train, X_test, y_train, y_test = preprocess(X_train, X_test, y_train, y_test,initialConfig["taskType"])
-getDataPropPost(dataSetProperties,initialConfig,X_train,y_train)
+getDataPropPost(dataSetProperties,initialConfig,X_train, X_test, y_train, y_test)
 
 resList=getRecommendation(initialConfig,dataSetProperties)
 

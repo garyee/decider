@@ -23,9 +23,9 @@ def rankPool(pool,properties):
     for method in pool:
         methodCounter=0
         for prop, value in properties.items():
-            rank=rank(prop,value,method)
-            if(rank is not None):
-                methodCounter+=rank
+            rankValue=rank(prop,value,method)
+            if(rankValue is not None):
+                methodCounter+=rankValue
         if(str(methodCounter) not in res):
             res[str(methodCounter)]=method
         else:
