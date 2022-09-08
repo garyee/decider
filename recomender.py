@@ -47,6 +47,7 @@ def getRecommendation(config,properties):
     rankedDist=rankPool(pool,properties)
     res=[]
     index=0
+    rankedDist = dict(sorted(rankedDist.items(), key=lambda x:int(x[0]),reverse=True))
     for key, value in rankedDist.items():
         if(index>4):
             break

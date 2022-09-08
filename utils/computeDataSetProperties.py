@@ -8,6 +8,7 @@ import pandas as pd
 import statsmodels.api as sm
 from statsmodels.formula.api import ols
 from sklearn.ensemble import GradientBoostingRegressor
+from sklearn_gbmi import *
 
 from utils.interactivity2 import h_stat
 
@@ -64,20 +65,18 @@ def computeMonotonicity(X_train,y_train,targetName):
 #     features = "+".join(fullXy.columns)
 #     model = ols(targetName+' ~' + features, data=fullXy).fit()
 #     tmp=sm.stats.anova_lm(model, typ=2)
-#     print(tmp)
-
-#     interActionMatrix = pd.DataFrame(tmp)
+#     tmp1=tmp.iloc[:,3]
 #     # print(interActionMatrix)
-#     return 0
+#     return tmp1.mean()
 
+# of this does not work please use method above
 def computeInteractivity(X_train, X_test, y_train, y_test,targetName):
     gbr_1 = GradientBoostingRegressor(max_depth=10,random_state = 42)
     gbr_1.fit(X_train, y_train)
-    print('GBM: '+str(gbr_1.score(X_test, y_test)))
-    hstat=h_stat(gbr_1, X_train, 'all')
-    print('H: '+hstat)
-#     # if(math.isnan(hstat)):
-#     #     return 0
-#     # return hstat
-    return 0
+    hstat=h(gbr_1, X_train)
+    if(math.isnan(hstat) or hstat<0):
+        return 0
+    if(hstat>1):
+        return 1
+    return hstat
 

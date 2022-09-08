@@ -85,6 +85,7 @@ def pdp_multi_interact(model, dataset, model_features, features,
     true_n_jobs = _calc_memory_usage(
         df=_dataset, total_units=len(grid_combos), n_jobs=n_jobs, memory_limit=memory_limit)
 
+    print('jehtweidor1')
     grid_results = Parallel(n_jobs=true_n_jobs)(delayed(_calc_ice_lines_inter)(
         grid_combo, data=_dataset, model=model, model_features=model_features, n_classes=n_classes,
         feature_list=feature_list, predict_kwds=predict_kwds, data_transformer=data_transformer)
@@ -121,7 +122,6 @@ def compute_f_vals(mdl, X, features, selectedfeatures, num_grid_points=10, use_d
     if use_data_grid:
         data_grid = X[selectedfeatures].values
     # Calculate partial dependencies for full feature set
-    print('calc pdp1')
     p_full = pdp_multi_interact(mdl, X, features, selectedfeatures, 
                                 num_grid_points=[num_grid_points] * len(selectedfeatures),
                                 cust_grid_combos=data_grid,
