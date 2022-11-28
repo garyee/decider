@@ -67,6 +67,7 @@ def readUploadedFilesToDfsAndSave(uploader):
 #     raise RuntimeError(msg)
 
 def getTrainAndTestSetXandY(X_train,X_test,y_label):
+  X_train.dropna(subset=[y_label], inplace=True)
   y_train=X_train[y_label]
   X_train.drop([y_label],axis=1,inplace=True)
   if (X_test is not None and type(X_test) is not list) and y_label not in X_test:

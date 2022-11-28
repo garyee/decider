@@ -1,6 +1,6 @@
 
 from utils.computeDataSetProperties import getDataPropPost, getDataPropPre
-from utils.enums import ExplanationScope, TaskType, XaiMode
+from utils.enums import ExplanationScope, ResultTypes, TaskType, XaiMode
 from utils.helper import getTrainAndTestSetXandY
 from recomender import getRecommendation
 import pandas as pd
@@ -11,6 +11,9 @@ import numpy as np
 from utils.preprocessing import preprocess
 
 X_train = pd.read_csv("./data/titanic_train.csv", dtype={"Age": np.float64}, )
+target='Survived'
+# X_train = pd.read_csv("./data/melb_data.csv", )
+# target='Price'
 X_test = None
 
 
@@ -19,10 +22,10 @@ X_test = None
 # Mon
 
 initialConfig={
-    'targetLabel':'Survived',
+    'targetLabel':target,
     'taskType': TaskType.CLASSIFICATION,
-    'explanationScope': ExplanationScope.GLOBAL,
-    'xaiMode': XaiMode.INTERPRETABLE_MODEL,
+    'explanationScope': ExplanationScope.BOTH,
+    'xaiMode': None,
     'resultType': None,
     # pass in Sklearn compatible model
     'userModel': None,

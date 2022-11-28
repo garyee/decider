@@ -12,8 +12,8 @@ class SkopeRules(ImModelBase):
   SCOPE=ExplanationScope.BOTH
   RESULTS=[ResultTypes.TEXT]
   CONSTRAINTS={
-    'complexity': Complexity.MEDIUM,
-    'accuracy':Accuracy.HIGH,
+    'complexity': Complexity.HIGH,
+    'accuracy':Accuracy.LOW,
     'heterogeneity':Heterogeneity.CATEGORICAL,
     'col_count':ColumCount.BAD,
     'corr_det':Correlation.NONE,

@@ -12,11 +12,11 @@ class RuleFit(ImModelBase):
   SCOPE=ExplanationScope.BOTH
   RESULTS=[ResultTypes.TEXT]
   CONSTRAINTS={
-    'complexity': Complexity.MEDIUM,
-    'accuracy':Accuracy.MEDIUM,
+    'complexity': Complexity.HIGH,
+    'accuracy':Accuracy.LOW,
     'heterogeneity':Heterogeneity.BOTH,
     'col_count':ColumCount.BAD,
-    'corr_det':Correlation.NONE,
+    'corr_det':Correlation.BAD,
     'multicollinearity':Multicollinearity.NONE,
     'linearity':Linearity.NO,
     'monotonicity':Monotonicity.NO,

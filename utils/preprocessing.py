@@ -1,5 +1,6 @@
 from sklearn.preprocessing import OneHotEncoder
 from sklearn.preprocessing import LabelEncoder
+from sklearn.preprocessing import OrdinalEncoder
 from imblearn.combine import SMOTETomek
 from imblearn.over_sampling import SMOTE
 from imblearn.under_sampling import RandomUnderSampler,EditedNearestNeighbours,TomekLinks
@@ -38,7 +39,7 @@ def display_missing_values_table_chart(df,axis=1):
     print(percent_missing)
     #percent_missing.plot.bar()
 
-def delete_missing_values_columns(df_train,df_test=None,nanThreshold=65):
+def delete_missing_values_columns(df_train,df_test=None,nanThreshold=55):
     cols_with_nan = [cname for cname in df_train.columns if 100 * df_train[cname].isnull().sum()/ len(df_train[cname]) > nanThreshold]
     if (len(cols_with_nan)>0):
       df_train.drop(cols_with_nan,axis='columns', inplace=True)
@@ -55,21 +56,37 @@ def get_cardinality_percent(df):
     percentage=100/len(df[colName])*col_cardinality
     res=pd.concat([res,pd.Series([percentage],index =[colName])])
   return res
+#@title Delete high cardinal categorical cols
+def get_cardinality(df):
+  res = pd.Series(dtype='int')
+  #catCols,_ = getCategoricalColsNameList(df)
+  for colName in df.columns:
+    col_cardinality=len(pd.unique(df[colName]))
+    res=pd.concat([res,pd.Series([col_cardinality],index =[colName])])
+  return res
   #df.apply(pd.Series.nunique)
 
 def display_high_cardinalitity(df,axis=1):
     percent_cardinalitity = get_cardinality_percent(df)
     percent_cardinalitity.plot.bar()
 
-def delete_high_cardinalitity(df_train,df_test=None,cardinality_threshold=50):
+def delete_high_cardinalitity(df_train,df_test=None,cardinality_threshold=40):
   percent_cardinalitity = get_cardinality_percent(df_train)
   highCardinalCols=percent_cardinalitity[lambda x: x>cardinality_threshold]
   highCardinalColsIndexList=highCardinalCols.index.values.tolist()
-  if(len(highCardinalColsIndexList)):
-    df_train.drop(highCardinalColsIndexList,axis=1,inplace=True)
+  
+  cat_cols,num_cols=getCategoricalAndNummericalColsNameList(df_train)
+  cat_cardinalitity=get_cardinality(df_train[cat_cols])
+  highCardinalCATCols=cat_cardinalitity[lambda x: x>4]
+  cat_card_List=highCardinalCATCols.index.values.tolist()
+
+  joindList=cat_card_List+highCardinalColsIndexList
+
+  if(len(joindList)):
+    df_train.drop(joindList,axis=1,inplace=True)
     if(df_test is not None):
-      df_test.drop(highCardinalColsIndexList,axis=1,inplace=True)
-    print("The column(s) '",highCardinalColsIndexList,"' is/are droped as it was a high cardinality feature")
+      df_test.drop(joindList,axis=1,inplace=True)
+    print("The column(s) '",joindList,"' is/are droped as it was a high cardinality feature")
 
 #@title Impute all cols with missing values
 from sklearn.impute import SimpleImputer
@@ -107,7 +124,11 @@ def encodeCategoricalCols(df_train,df_test=None):
   res_train=df_train
   if (cat_cols is not None and isinstance(cat_cols,list) and len(cat_cols)>0):
     OH_encoder = OneHotEncoder(handle_unknown='error',drop='if_binary',sparse=False)
-    df_train_OH_cols = pd.DataFrame(OH_encoder.fit_transform(df_train[cat_cols]))
+    if(df_test is not None):
+      OH_encoder.fit(pd.concat([df_train[cat_cols],df_test[cat_cols]]))
+    else:
+      OH_encoder.fit(df_train[cat_cols])
+    df_train_OH_cols = pd.DataFrame(OH_encoder.transform(df_train[cat_cols]))
     df_train_OH_cols.columns = OH_encoder.get_feature_names(cat_cols)
     df_train.drop(cat_cols, axis=1, inplace=True)
     res_train = pd.concat([df_train, df_train_OH_cols], axis=1)

@@ -243,15 +243,16 @@ class Multicollinearity(Enum):
   def __str__(self):
     return str(self.value)
 
+# if bad 447 => 1 & >447 -> eponentially bad
 class ColumCount(Enum):
   BAD = 1
   NONE = 3
 
   def rank(self,numValue):
-    if(self.value==Multicollinearity.NONE.value):
+    if(self.value==ColumCount.NONE.value):
       return 2
-    if(self.value==Multicollinearity.BAD.value):
-      colCountRatio=int((numValue/100)^2)
+    if(self.value==ColumCount.BAD.value):
+      colCountRatio=int((numValue/100)**2)
       if(numValue>20):
         return (-1*colCountRatio)
     return 1
